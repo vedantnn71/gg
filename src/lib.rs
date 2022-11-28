@@ -1,5 +1,4 @@
-pub mod help;
 pub mod args;
-pub mod search;
 pub mod config;
-
+pub mod help;
+pub mod search;

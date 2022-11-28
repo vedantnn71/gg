@@ -1,4 +1,10 @@
-use std::{path::PathBuf, io::Write, process::exit, fs::{read_to_string, File}, env::{consts, var_os}};
+use std::{
+    env::{consts, var_os},
+    fs::{read_to_string, File},
+    io::Write,
+    path::PathBuf,
+    process::exit,
+};
 
 pub struct Provider {
     pub name: String,
@@ -55,8 +61,9 @@ pub fn create_config() {
 
     for provider in default_providers {
         let provider_string = format!(
-            "\n[{}]\nshort = '{}'\nsearch_path = '{}'\n", 
-            provider.name, provider.short, provider.search_path);
+            "\n[{}]\nshort = '{}'\nsearch_path = '{}'\n",
+            provider.name, provider.short, provider.search_path
+        );
 
         let result = config_file.write_all(provider_string.as_bytes());
 
@@ -74,7 +81,7 @@ pub fn get_providers() -> Vec<Provider> {
         panic!("No config file found");
     }
 
-    let file = read_to_string(config_path) .expect("Whoops unable to read the config file");
+    let file = read_to_string(config_path).expect("Whoops unable to read the config file");
     let parse = file.parse::<toml::Value>().unwrap();
     let providers = parse.as_table().unwrap();
     let mut provider_list: Vec<Provider> = Vec::new();
@@ -98,16 +105,19 @@ fn get_config_path() -> PathBuf {
 
     match consts::OS {
         "windows" => {
-            config_path = var_os("APP_DATA").map(PathBuf::from).expect("No APP_DATA directory found");
+            config_path = var_os("APP_DATA")
+                .map(PathBuf::from)
+                .expect("No APP_DATA directory found");
         }
         &_ => {
-            config_path = var_os("HOME").map(PathBuf::from).expect("No HOME directory found");
+            config_path = var_os("HOME")
+                .map(PathBuf::from)
+                .expect("No HOME directory found");
         }
     }
-    
+
     config_path.push(".gg");
     config_path.set_extension("toml");
 
     return config_path;
 }
-

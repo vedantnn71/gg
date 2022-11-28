@@ -1,7 +1,7 @@
+use crate::help::help;
+use std::env::args;
 use std::process::exit;
 use urlencoding::encode;
-use std::env::args;
-use crate::help::help;
 
 pub struct Args {
     pub provider: String,
@@ -11,9 +11,7 @@ pub struct Args {
 
 pub fn parse_args() -> Args {
     let provider = args().nth(1).unwrap();
-    let search_term = args()
-        .skip(2)
-        .collect::<Vec<String>>();
+    let search_term = args().skip(2).collect::<Vec<String>>();
 
     if search_term.is_empty() {
         help();
@@ -27,7 +25,5 @@ pub fn parse_args() -> Args {
         provider,
         search_term,
         url_safe_term,
-    }
+    };
 }
-
-
