@@ -1,31 +1,25 @@
 use std::process::{exit, Command};
-use urlencoding::{encode};
-use std::env::args;
-
-#[derive(Debug)]
-struct Website {
-    name: String,
-    short: String,
-    search_path: String,
-}
+use gg::providers::get_providers;
+use gg::args::parse_args;
+use gg::help::help;
 
 fn main() {
-    let websites = get_websites();
+    let providers = get_providers();
     let args = parse_args();
     
-    let website = websites
+    let provider = providers
         .iter()
-        .find(|&w| w.name == args.website || w.short == args.website);
+        .find(|&p| p.name == args.provider || p.short == args.provider);
 
-    if website.is_none() {
+    if provider.is_none() {
         help();
         exit(1);
     }
 
-    let website = website.unwrap();
-    let url = format!("{}{}", website.search_path, args.url_safe_term);
+    let provider = provider.unwrap();
+    let url = format!("{}{}", provider.search_path, args.url_safe_term);
 
-    println!("Searching for \"{}\" using {}...", args.search_term, website.name);
+    println!("Searching for \"{}\" using {}...", args.search_term, provider.name);
 
     if cfg!(target_os = "windows") {
         Command::new("cmd")
@@ -40,51 +34,4 @@ fn main() {
     }
 }
 
-fn get_websites() -> Vec<Website> {
-    let websites: Vec<Website> = vec![
-        Website {
-            name: "google".to_string(),
-            short: "gg".to_string(),
-            search_path: "https://google.com/search?q=".to_string(),
-        },
-        Website {
-            name: "duckduckgo".to_string(),
-            short: "ddg".to_string(),
-            search_path: "https://duckduckgo.com/?q=".to_string(),
-        }
-    ];
-
-    return websites;
-}
-
-struct Args {
-    website: String,
-    search_term: String,
-    url_safe_term: String,
-}
-
-fn parse_args() -> Args {
-    let website = args().nth(1).unwrap();
-    let search_term = args()
-        .skip(2)
-        .collect::<Vec<String>>();
-
-    if search_term.is_empty() {
-        help();
-        exit(1);
-    }
-
-    let search_term = search_term.join(" ");
-    let url_safe_term = encode(&search_term).to_string();
-
-    return Args {
-        website,
-        search_term,
-        url_safe_term,
-    }
-}
-
-fn help() {
-    println!("Usage: <website> <search term>");
-}
 
