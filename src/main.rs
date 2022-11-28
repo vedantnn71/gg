@@ -26,6 +26,11 @@ fn main() {
             .args(["/C", &format!("explorer {}", url)])
             .output()
             .expect(&format!("Whoops, failed to open {}", url));
+    } else if cfg!(target_os = "macos") {
+        Command::new("sh")
+            .args(["-c", &format!("open -n {}", url)])
+            .output()
+            .expect(&format!("Whoops failed to open {}", url));
     } else {
         Command::new("sh")
             .args(["-c", &format!("xdg-open {}", url)])
