@@ -5,6 +5,7 @@ use gg::{
     search::search,
 };
 use std::process::exit;
+use spinach::Spinach;
 
 fn main() {
     create_config();
@@ -22,11 +23,9 @@ fn main() {
     }
 
     let provider = provider.unwrap();
-
-    println!(
-        "Searching for \"{}\" using {}...",
-        args.search_term, provider.name
-    );
+    let spinner = Spinach::new(format!("Searching for {} with {}...", args.search_term, provider.name));
 
     search(&provider.search_path, &args.url_safe_term);
+
+    spinner.succeed("Done!");
 }

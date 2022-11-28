@@ -8,6 +8,7 @@ version = "0.1.0"
 dependencies = [
  "serde",
  "serde_derive",
+ "spinach",
  "toml",
  "urlencoding",
 ]
@@ -46,6 +47,12 @@ dependencies = [
  "quote",
  "syn",
 ]
+
+[[package]]
+name = "spinach"
+version = "2.1.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "16970c6e553ab70e3da4b335276701cda1366c0957a38a694297893cdd86bdf5"
 
 [[package]]
 name = "syn"
