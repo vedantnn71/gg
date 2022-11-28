@@ -1,4 +1,5 @@
 use std::process::{exit, Command};
+use urlencoding::{encode};
 use std::env::args;
 
 #[derive(Debug)]
@@ -24,7 +25,7 @@ fn main() {
     let website = website.unwrap();
     let url = format!("{}{}", website.search_path, args.url_safe_term);
 
-    println!("Searching for \"{}\" using {}...", url, website.name);
+    println!("Searching for \"{}\" using {}...", args.search_term, website.name);
 
     if cfg!(target_os = "windows") {
         Command::new("cmd")
@@ -73,8 +74,8 @@ fn parse_args() -> Args {
         exit(1);
     }
 
-    let url_safe_term = search_term.join("%20");
     let search_term = search_term.join(" ");
+    let url_safe_term = encode(&search_term).to_string();
 
     return Args {
         website,
