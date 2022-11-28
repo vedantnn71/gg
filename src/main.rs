@@ -1,10 +1,9 @@
 use std::process::exit;
-use gg::providers::get_providers;
-use gg::args::parse_args;
-use gg::help::help;
-use gg::search::search;
+use gg::{args::parse_args, help::help, search::search, config::{create_config, get_providers}};
 
 fn main() {
+    create_config();
+
     let providers = get_providers();
     let args = parse_args();
     
