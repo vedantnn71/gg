@@ -1,7 +1,8 @@
-use std::process::{exit, Command};
+use std::process::exit;
 use gg::providers::get_providers;
 use gg::args::parse_args;
 use gg::help::help;
+use gg::search::search;
 
 fn main() {
     let providers = get_providers();
@@ -17,26 +18,10 @@ fn main() {
     }
 
     let provider = provider.unwrap();
-    let url = format!("{}{}", provider.search_path, args.url_safe_term);
 
     println!("Searching for \"{}\" using {}...", args.search_term, provider.name);
 
-    if cfg!(target_os = "windows") {
-        Command::new("cmd")
-            .args(["/C", &format!("explorer {}", url)])
-            .output()
-            .expect(&format!("Whoops, failed to open {}", url));
-    } else if cfg!(target_os = "macos") {
-        Command::new("sh")
-            .args(["-c", &format!("open -n {}", url)])
-            .output()
-            .expect(&format!("Whoops failed to open {}", url));
-    } else {
-        Command::new("sh")
-            .args(["-c", &format!("xdg-open {}", url)])
-            .output()
-            .expect(&format!("Whoops, failed to open {}", url));
-    }
+    search(&provider.search_path, &args.url_safe_term);
 }
 
 
