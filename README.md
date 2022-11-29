@@ -41,3 +41,6 @@ search_path = 'https://github.com/search?q='
 short = 'so'
 search_path = 'https://stackoverflow.com/search?q='
 ```
+
+## Building
+Make sure that you have installed cargo and rust on your system, then run `cargo {run|build}` to run or build for developement, and `cargo build --release` to build for production.
