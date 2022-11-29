@@ -11,7 +11,7 @@ Search with your favorite websites straight from the terminal!
 https://user-images.githubusercontent.com/70624701/204431989-48853a25-e24a-413e-ac6f-0f7f6b0d960a.mp4
 
 ## Configure gg
-To add more websites, just edit the `~/.gg.toml` file and add whatever you want, the default config is as follows:
+To add more websites, just edit the `~/.gg.toml` or `%APP_DATA%/.gg.toml` file and add whatever you want, the default config is as follows:
 ```toml
 [google]
 short = 'go'
