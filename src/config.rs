@@ -67,7 +67,9 @@ pub fn create_config() -> Result<(), Error> {
 
         let result = config_file.write_all(provider_string.as_bytes());
 
-        return result;
+        if result.is_err() {
+            return Err(result.err().unwrap());
+        }
     }
 
     return Ok(());
