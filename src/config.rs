@@ -3,7 +3,7 @@ use std::{
     fs::{read_to_string, File},
     io::Write,
     path::PathBuf,
-    process::exit,
+    io::Error,
 };
 
 pub struct Provider {
@@ -12,7 +12,7 @@ pub struct Provider {
     pub search_path: String,
 }
 
-pub fn create_config() {
+pub fn create_config() -> Result<(), Error> {
     let default_providers: Vec<Provider> = vec![
         Provider {
             name: "google".to_string(),
@@ -54,7 +54,7 @@ pub fn create_config() {
     let config_path = get_config_path();
 
     if config_path.exists() {
-        return;
+        return Ok(());
     }
 
     let mut config_file = File::create(config_path).unwrap();
@@ -67,11 +67,10 @@ pub fn create_config() {
 
         let result = config_file.write_all(provider_string.as_bytes());
 
-        if result.is_err() {
-            println!("Unable to write to config file");
-            exit(1);
-        }
+        return result;
     }
+
+    return Ok(());
 }
 
 pub fn get_providers() -> Vec<Provider> {

@@ -8,8 +8,7 @@ use std::process::exit;
 use spinach::Spinach;
 
 fn main() {
-    create_config();
-
+    let config = create_config();
     let providers = get_providers();
     let args = parse_args();
 
@@ -25,7 +24,17 @@ fn main() {
     let provider = provider.unwrap();
     let spinner = Spinach::new(format!("Searching for {} with {}...", args.search_term, provider.name));
 
-    search(&provider.search_path, &args.url_safe_term);
+    if config.is_err() {
+        spinner.fail("Failed to create config file");
+        exit(1);
+    }
+
+    let search_output = search(&provider.search_path, &args.url_safe_term);
+
+    if search_output.is_err() {
+        spinner.fail("Failed to open browser");
+        exit(1);
+    }
 
     spinner.succeed("Done!");
 }
