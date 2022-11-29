@@ -22,7 +22,7 @@ pub fn create_config() -> Result<(), Error> {
         Provider {
             name: "duckduckgo".to_string(),
             short: "ddg".to_string(),
-            search_path: "https://duckdcukgo.com/search?q=".to_string(),
+            search_path: "https://duckduckgo.com/?q=".to_string(),
         },
         Provider {
             name: "youtube".to_string(),
